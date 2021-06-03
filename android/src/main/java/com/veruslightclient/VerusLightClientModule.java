@@ -242,7 +242,6 @@ class VerusLightClientModule extends ReactContextBaseJavaModule {
 			param 5: fromAddress,
 			param 6: amount,
 			param 7: memo
-			param 8: spendingKey
 			*/
 				result = this.putSend(params.getString(3), params.getString(4), Long.parseLong(params.getString(5)), params.getString(6), params.getString(7), index);
 
@@ -529,6 +528,7 @@ try {
 		return cash.z.wallet.sdk.KtJavaComLayer.Companion.getBlockDirty(VerusLightClientModule.context, blockNumberInt, index);
 	}
 
+//verifies a message and returns a bolean in string form
 	private String verifyMessage(int index, String signer, String signature, String message, String checklast){
 
 		Boolean check = Boolean.parseBoolean(checklast);
@@ -653,6 +653,11 @@ try {
 		}
 	}
 
+
+	/*
+		this function derives the spendingkeys from the seed.
+	*/
+
 	@ReactMethod
 	public void deriveSpendingKeys(String seed, Boolean iets, int numberOfAccounts, Promise promise){
 		try{
@@ -670,12 +675,16 @@ try {
 			}
 	}
 
+
+	/*
+		this function derives the viewing keys from a spendingkey.
+	*/
 	@ReactMethod
 	public void deriveViewingKey(String spendingKey, Promise promise){
 		try{
 			Activity mActivity = getCurrentActivity();
 			Context mContext = mActivity.getApplicationContext();
-			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey);
+			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey, mContext);
 			promise.resolve(response);
 		}catch (IllegalViewOperationException e) {
 			promise.reject(E_LAYOUT_ERROR, e);

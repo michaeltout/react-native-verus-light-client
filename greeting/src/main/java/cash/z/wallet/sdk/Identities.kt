@@ -62,82 +62,102 @@ class Identities(){
   private var nameId = "";
   private var referralIdentity = "";
 
+// returns name of the identity
   public fun getName(): String{
     return name;
   }
 
+// returns an dictionary of atributes
   public fun getContentMap(): Map<String, String>?{
     return contentMap;
   }
 
+// returns the addresses of the identity
   public fun getAddresses(): List<String>?{
     return primaryAddresses;
   }
-
+// returns how many signatures you need
   public fun getMinimumSignatures(): Int{
     return minimumSignatures;
   }
 
+//returnes the private address
   public fun getPrivateAddress(): String{
     return privateAddress;
   }
 
+//returnes the authority that can recover
   public fun getRecoveryAuthority(): String{
     return recoveryAuthority;
   }
 
+//returns the flags
   public fun getFlags(): Int{
     return flags;
   }
 
+//returns the version
   public fun getVersion(): Int{
     return version;
   }
 
+//returns the parent
   public fun getParent(): String{
     return parent;
   }
 
+//returns the identities it can sign for
   public fun getCanSignFor(): Boolean?{
     return canSignFor;
   }
 
+//returns the address it can spend for
   public fun getCanSpendFor(): Boolean?{
     return canSpendFor;
   }
 
+//returns the blockcheight it was made
   public fun getBlockHeight(): Long{
     return blockHeigt;
   }
 
+//returns the vouts
   public fun getVout(): Int{
     return vOut;
   }
 
+//returns the txid
   public fun getTxid(): String{
     return txId;
   }
 
+//returns the salt
   public fun getSalt(): String{
     return salt;
   }
 
+
+// returns the name of the id
   public fun getNameId(): String{
     return nameId;
   }
 
+// returns the referal of the id
   public fun getReferalId(): String{
     return referralIdentity;
   }
 
+//returns the revocation authority
   public fun getRevocationAuthority(): String{
     return revocationAuthority;
   }
 
+//returns the status
   public fun getStatus(): String{
     return status;
   }
 
+//updates the identity
   public fun updateIdentityInfo( identityInfo: Service.IdentityInfo) {
       status = identityInfo.getStatus();
       canSignFor = identityInfo.getCansignfor();
@@ -148,7 +168,7 @@ class Identities(){
   }
 
 
-
+//updates name resercation
   public fun updateNameReservation(
     nameReservation: Service.NameReservation
     ){
@@ -159,6 +179,7 @@ class Identities(){
       parent = nameReservation.getParent();
     }
 
+//makes an idenity kotlin object instead of service
     public fun setIdentity(identity: Service.Identity){
       name = identity.getName();
       contentMap = identity.getContentmap();

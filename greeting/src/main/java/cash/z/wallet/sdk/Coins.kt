@@ -157,7 +157,11 @@ class Coins (
     }
 
     //gets the privatekey
-  /*  public fun getPrivKey(): String{
+  /*  functions for internal private key handeling.
+      a disciscion was made that they are handeld in the app and not in the lib.
+      so have been removed.
+
+    public fun getPrivKey(): String{
       return initializer?.deriveSpendingKeys(seedInByteArray!!)!!.first().toString();
     }
     //gets the spendingKeys
@@ -185,6 +189,8 @@ class Coins (
       return numberOfAccounts;
     }
 
+
+    //sets the identity
     public fun setIdentity(iIdentity: Identities): Int{
       var indexNumber: Int = 0;
       if(::identities.isInitialized){
@@ -204,7 +210,7 @@ class Coins (
        return syncroProgress;
      }
 
-
+//monitors the synchronizer changes
     public fun monitorChanges() = runBlocking {
       try{
       //first load the status
@@ -237,6 +243,7 @@ class Coins (
       return -1;
     }
 
+//test the bytearray to string
     fun test(array: ByteArray): String{
       var string = " "
       var message = " "

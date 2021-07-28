@@ -20,7 +20,8 @@ import kotlinx.coroutines.withContext
  */
 class CompactBlockDbStore(
     appContext: Context,
-    val dbPath: String
+    val dbPath: String,
+    coinType: String
 ) : CompactBlockStore {
 
     private val cacheDao: CompactBlockDao
@@ -41,7 +42,12 @@ class CompactBlockDbStore(
 
     override suspend fun getLatestHeight(): Int = withContext(IO) {
         val lastBlock = Math.max(0, cacheDao.latestBlockHeight())
-        if (lastBlock < SAPLING_ACTIVATION_HEIGHT) -1 else lastBlock
+        if(cointype == "ZEC"){
+              if (lastBlock < SAPLING_ACTIVATION_HEIGHT_ZCASH) -1 else lastBlock
+        }else{
+            if (lastBlock < SAPLING_ACTIVATION_HEIGHT) -1 else lastBlock
+        }
+
     }
 
     override suspend fun findCompactBlock(height: Int): CompactFormats.CompactBlock? {

@@ -23,6 +23,8 @@ open class ZcashSdkCommon {
      * prior to this height, at all.
      */
     open val SAPLING_ACTIVATION_HEIGHT = 280_000
+    open val SAPLING_ACTIVATION_HEIGHT_ZCASH = 280_000
+
 
     open val NETWORK = "mainnet"
 
@@ -80,11 +82,14 @@ open class ZcashSdkCommon {
      * The default port to use for connecting to lightwalletd instances.
      */
     open val DEFAULT_LIGHTWALLETD_PORT = 9077
+    open val DEFAULT_LIGHTWALLETD_PORT_ZCASH = 9077
 
     /**
      * The default host to use for lightwalletd.
      */
     open val DEFAULT_LIGHTWALLETD_HOST = "light.virtualsoundnw.com"
+    open val DEFAULT_LIGHTWALLETD_HOST_ZCASH = "light.virtualsoundnw.com"
+
 
     val DB_DATA_NAME = "Data.db"
     val DB_CACHE_NAME = "Cache.db"

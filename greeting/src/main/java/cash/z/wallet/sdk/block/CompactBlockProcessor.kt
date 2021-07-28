@@ -55,8 +55,14 @@ class CompactBlockProcessor(
     val downloader: CompactBlockDownloader,
     private val repository: TransactionRepository,
     private val rustBackend: RustBackendWelding,
-    minimumHeight: Int = SAPLING_ACTIVATION_HEIGHT
+    coinType: String,
+    var minimumHeight: Int = SAPLING_ACTIVATION_HEIGHT
 ) {
+    init {
+      if( coinType == "ZEC" ){
+        minimumHeight = SAPLING_ACTIVATION_HEIGHT_ZCASH
+      }
+    }
     /**
      * Callback for any non-trivial errors that occur while processing compact blocks.
      *
@@ -72,7 +78,7 @@ class CompactBlockProcessor(
     var onChainErrorListener: ((errorHeight: Int, rewindHeight: Int) -> Any)? = null
 
     private val consecutiveChainErrors = AtomicInteger(0)
-    private val lowerBoundHeight: Int = max(SAPLING_ACTIVATION_HEIGHT, minimumHeight - MAX_REORG_SIZE)
+    private val lowerBoundHeight: Int = max(minimumHeight, minimumHeight - MAX_REORG_SIZE)
 
     private val _state: ConflatedBroadcastChannel<State> = ConflatedBroadcastChannel(Initialized)
     private val _progress = ConflatedBroadcastChannel(0)

@@ -623,6 +623,7 @@ try {
 		}
 	}
 
+
 	@ReactMethod //initialzes/new the back end, data base etc
 	/*
 		use this method to load, all the data into the coin object. If you call this method Nothing
@@ -684,7 +685,7 @@ try {
 		try{
 			Activity mActivity = getCurrentActivity();
 			Context mContext = mActivity.getApplicationContext();
-			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey, mContext);
+			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey);
 			promise.resolve(response);
 		}catch (IllegalViewOperationException e) {
 			promise.reject(E_LAYOUT_ERROR, e);

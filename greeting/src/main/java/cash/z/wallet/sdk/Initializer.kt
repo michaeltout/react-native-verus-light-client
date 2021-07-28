@@ -41,6 +41,10 @@ class Initializer(
     private lateinit var paramsType: String
 
     init {
+        if(coinType == "ZEC"){
+          host = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST_ZCASH
+          port = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT_ZCASH
+        }
         validateAlias(alias)
         paramsType = coinType
     }
@@ -439,8 +443,16 @@ class Initializer(
     class DefaultBirthdayStore(
         private val appContext: Context,
         val alias: String,
+        val coinType: String,
         private val importedBirthdayHeight: Int? = null
     ) : WalletBirthdayStore {
+
+        init {
+          var saplingHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+          if (coinType == "ZEC"){
+            saplingHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
+          }
+        }
 
         /**
          * Birthday that helps new wallets not have to scan from the beginning, which saves
@@ -456,7 +468,7 @@ class Initializer(
          * the constructor and it is a different value for mainnet and testnet.
          */
         private val saplingBirthday: WalletBirthday get() =
-            loadBirthdayFromAssets(appContext, ZcashSdk.SAPLING_ACTIVATION_HEIGHT)
+            loadBirthdayFromAssets(appContext, saplingHeight)
 
         /**
          * Preferences where the birthday is stored.

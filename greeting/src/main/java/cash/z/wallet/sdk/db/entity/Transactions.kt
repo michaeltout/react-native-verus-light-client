@@ -333,15 +333,19 @@ fun PendingTransaction.isSubmitted(): Boolean {
     return submitAttempts > 0
 }
 
-fun PendingTransaction.isExpired(latestHeight: Int?): Boolean {
+fun PendingTransaction.isExpired(latestHeight: Int?, coinType: String): Boolean {
+    activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+    if(coinType == "ZEC"){
+      activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
+    }
     // TODO: test for off-by-one error here. Should we use <= or <
-    if (latestHeight == null || latestHeight < ZcashSdk.SAPLING_ACTIVATION_HEIGHT || expiryHeight < ZcashSdk.SAPLING_ACTIVATION_HEIGHT) return false
+    if (latestHeight == null || latestHeight < activationHeight || expiryHeight < activationHeight) return false
     return expiryHeight < latestHeight
 }
 
 // if we don't have info on a pendingtx after 100 blocks then it's probably safe to stop polling!
 fun PendingTransaction.isLongExpired(latestHeight: Int?): Boolean {
-    if (latestHeight == null || latestHeight < ZcashSdk.SAPLING_ACTIVATION_HEIGHT || expiryHeight < ZcashSdk.SAPLING_ACTIVATION_HEIGHT) return false
+    if (latestHeight == null || latestHeight < activationHeight || expiryHeight < activationHeight) return false
     return (latestHeight - expiryHeight) > 100
 }
 

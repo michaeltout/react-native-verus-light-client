@@ -387,12 +387,16 @@ class SdkSynchronizer internal constructor(
 fun Synchronizer(
     appContext: Context,
     path: String,
-    lightwalletdHost: String = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST,
-    lightwalletdPort: Int = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT,
+    lightwalletdHosti: String = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST,
+    lightwalletdPorti: Int = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT,
     viewingKey: String,
-    birthdayStore: Initializer.WalletBirthdayStore = Initializer.DefaultBirthdayStore(appContext, path),
-    coinType: String
+    coinType: String,
+    birthdayStore: Initializer.WalletBirthdayStore = Initializer.DefaultBirthdayStore(appContext, coinType, path),
+
 ): Synchronizer {
+    var lightwalletdHost = lightwalletdHosti
+    var lightwalletdPort = lightwalletdPorti
+
     if(coinType == "ZEC"){
       lightwalletdHost = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST_ZCASH
       lightwalletdPort = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT_ZCASH
@@ -413,7 +417,7 @@ fun Synchronizer(
             initializer.import(viewingKey, birthdayStore.getBirthday(), true, true)
         }
     }
-    return Synchronizer(appContext, initializer)
+    return Synchronizer(appContext, initializer, coinType)
 }
 
 /**
@@ -432,13 +436,14 @@ fun Synchronizer(
 @Suppress("FunctionName")
 fun Synchronizer(
     appContext: Context,
-    initializer: Initializer
+    initializer: Initializer,
+    coinType: String
 ): Synchronizer {
     check(initializer.isInitialized) {
         "Error: RustBackend must be loaded before creating the Synchronizer. Verify that either" +
                 " the 'open', 'new' or 'import' function has been called on the Initializer."
     }
-    return Synchronizer(appContext, initializer.rustBackend, initializer.host, initializer.port)
+    return Synchronizer(appContext, initializer.rustBackend, initializer.host, initializer.port, coinType)
 }
 
 /**
@@ -468,16 +473,17 @@ fun Synchronizer(
     rustBackend: RustBackend,
     lightwalletdHost: String,
     lightwalletdPort: Int,
+    coinType: String,
     ledger: TransactionRepository =
         PagedTransactionRepository(appContext, 1000, rustBackend.pathDataDb), // TODO: fix this pagesize bug, small pages should not crash the app. It crashes with: Uncaught Exception: android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views. and is probably related to FlowPagedList
-    blockStore: CompactBlockStore = CompactBlockDbStore(appContext, rustBackend.pathCacheDb),
+    blockStore: CompactBlockStore = CompactBlockDbStore(appContext,coinType, rustBackend.pathCacheDb),
     service: LightWalletService = LightWalletGrpcService(appContext, lightwalletdHost, lightwalletdPort),
     encoder: TransactionEncoder = WalletTransactionEncoder(rustBackend, ledger),
     downloader: CompactBlockDownloader = CompactBlockDownloader(service, blockStore),
     manager: OutboundTransactionManager =
         PersistentTransactionManager(appContext, encoder, service),
     processor: CompactBlockProcessor =
-        CompactBlockProcessor(downloader, ledger, rustBackend, rustBackend.birthdayHeight)
+        CompactBlockProcessor(downloader, ledger, rustBackend, coinType, rustBackend.birthdayHeight)
 ): Synchronizer {
     // ties everything together
     return SdkSynchronizer(

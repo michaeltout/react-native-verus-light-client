@@ -6,6 +6,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import cash.z.wallet.sdk.ext.ZcashSdk
+import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
 
 
 //
@@ -334,7 +336,7 @@ fun PendingTransaction.isSubmitted(): Boolean {
 }
 
 fun PendingTransaction.isExpired(latestHeight: Int?, coinType: String): Boolean {
-    activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+    var activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
     if(coinType == "ZEC"){
       activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
     }
@@ -344,7 +346,11 @@ fun PendingTransaction.isExpired(latestHeight: Int?, coinType: String): Boolean 
 }
 
 // if we don't have info on a pendingtx after 100 blocks then it's probably safe to stop polling!
-fun PendingTransaction.isLongExpired(latestHeight: Int?): Boolean {
+fun PendingTransaction.isLongExpired(latestHeight: Int?, coinType: String): Boolean {
+    var activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+    if(coinType == "ZEC"){
+      activationHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
+    }
     if (latestHeight == null || latestHeight < activationHeight || expiryHeight < activationHeight) return false
     return (latestHeight - expiryHeight) > 100
 }

@@ -8,7 +8,7 @@ import cash.z.wallet.sdk.service.LightWalletService
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.Dispatchers.IO
-
+import cash.z.wallet.sdk.util.SimpleMnemonics
 import java.util.*
 import java.io.File
 
@@ -104,7 +104,7 @@ class KtJavaComLayer (){
 				return "error: not initialized coin usage";
 		}else{
 		if(coins[index].initializer != null){
-			coins[index].synchronizer = Synchronizer(mContext, coins[index].initializer!!);
+			coins[index].synchronizer = Synchronizer(mContext, coins[index].initializer!!, coins[index].getticker());
 			coins[index].monitorChanges();
 			twig("komt hij wel hier?")
 			coins[index].monitorWalletChanges();
@@ -370,17 +370,32 @@ class KtJavaComLayer (){
 
 		@JvmStatic private external fun deriveExtendedSpendingKeys(seed: ByteArray, numberOfAccounts: Int): Array<String>
 
-		fun getderiveViewingKey(spendingKey: String): String{
+		fun getderiveViewingKey(spendingKey: String, menomic: Boolean): String{
 			//var init = Initializer(mContext, "test2", "VRSC");
 			//var walletBirthday = Initializer.DefaultBirthdayStore.loadBirthdayFromAssets(mContext);
 			//init.new("j28ej892jf92fj2fj9e28fj2fgebf72nf92efn92f98m2jfj828mfj2ef7jm287ejmf782jm87jm78ejm278mje2jdx78j2me87dx7m2xe2", walletBirthday);
+			var viewingkey = "";
 			System.loadLibrary("zcashwalletsdk")
-			var viewingkey = deriveExtendedFullViewingKey(spendingKey)
+			if( menomic == true){
+				val seed: ByteArray = SimpleMnemonics().toSeed(spendingKey.toCharArray())
+				viewingkey = deriveExtendedFullViewingKey(seed)
+			}else{
+
+				viewingkey = deriveExtendedFullViewingKey(spendingKey.decodeHex())
+			}
 			//init.clear()
 			return viewingkey//viewingkey;
 		}
 
-		@JvmStatic private external fun deriveExtendedFullViewingKey(spendingKey: String): String
+		fun String.decodeHex(): ByteArray {
+    check(length % 2 == 0) { "Must have an even length" }
+
+    return chunked(2)
+        .map { it.toInt(16).toByte() }
+        .toByteArray()
+}
+
+		@JvmStatic private external fun deriveExtendedFullViewingKey(spendingKey: ByteArray): String
 
 		//get the wallet balance
 		fun getWalletBalanceDirty( includePending: Boolean, address: String, index: Int): String = runBlocking{

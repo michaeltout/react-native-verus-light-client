@@ -7,6 +7,7 @@ import cash.z.wallet.sdk.db.CompactBlockDao
 import cash.z.wallet.sdk.db.CompactBlockDb
 import cash.z.wallet.sdk.db.entity.CompactBlockEntity
 import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
 import cash.z.wallet.sdk.rpc.CompactFormats
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -21,13 +22,16 @@ import kotlinx.coroutines.withContext
 class CompactBlockDbStore(
     appContext: Context,
     val dbPath: String,
-    coinType: String
+    coinTypei: String
 ) : CompactBlockStore {
 
+
+    private var coinType = ""
     private val cacheDao: CompactBlockDao
     private val cacheDb: CompactBlockDb
 
     init {
+        coinType = coinTypei
         cacheDb = createCompactBlockCacheDb(appContext)
         cacheDao = cacheDb.complactBlockDao()
     }
@@ -42,7 +46,7 @@ class CompactBlockDbStore(
 
     override suspend fun getLatestHeight(): Int = withContext(IO) {
         val lastBlock = Math.max(0, cacheDao.latestBlockHeight())
-        if(cointype == "ZEC"){
+        if(coinType == "ZEC"){
               if (lastBlock < SAPLING_ACTIVATION_HEIGHT_ZCASH) -1 else lastBlock
         }else{
             if (lastBlock < SAPLING_ACTIVATION_HEIGHT) -1 else lastBlock

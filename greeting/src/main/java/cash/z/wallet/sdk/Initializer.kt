@@ -34,8 +34,8 @@ class Initializer(
     appContext: Context,
     val alias: String,
     val coinType: String,
-    val host: String = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST,
-    val port: Int = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT
+    var host: String = ZcashSdk.DEFAULT_LIGHTWALLETD_HOST,
+    var port: Int = ZcashSdk.DEFAULT_LIGHTWALLETD_PORT
 ) {
 
     private lateinit var paramsType: String
@@ -446,9 +446,10 @@ class Initializer(
         val coinType: String,
         private val importedBirthdayHeight: Int? = null
     ) : WalletBirthdayStore {
+      var saplingHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
 
         init {
-          var saplingHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+
           if (coinType == "ZEC"){
             saplingHeight = ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
           }
@@ -569,8 +570,8 @@ class Initializer(
              * @param appContext the application context.
              * @param alias the alias to use when naming the preferences file used for storage.
              */
-            fun NewWalletBirthdayStore(appContext: Context, alias: String): WalletBirthdayStore {
-                return DefaultBirthdayStore(appContext, alias = alias).apply {
+            fun NewWalletBirthdayStore(appContext: Context, cointype: String, alias: String): WalletBirthdayStore {
+                return DefaultBirthdayStore(appContext, alias = alias, cointype,).apply {
                     setBirthday(newWalletBirthday)
                 }
             }
@@ -587,8 +588,8 @@ class Initializer(
              * ignored since a wallet cannot have transactions before it is born.
              * @param alias the alias to use when naming the preferences file used for storage.
              */
-            fun ImportedWalletBirthdayStore(appContext: Context, importedBirthdayHeight: Int?, alias: String): WalletBirthdayStore {
-                return DefaultBirthdayStore(appContext, alias = alias).apply {
+            fun ImportedWalletBirthdayStore(appContext: Context, importedBirthdayHeight: Int?, cointType: String, alias: String): WalletBirthdayStore {
+                return DefaultBirthdayStore(appContext, alias = alias, cointType).apply {
                     if (importedBirthdayHeight != null) {
                         saveBirthdayToPrefs(prefs, loadBirthdayFromAssets(appContext, importedBirthdayHeight))
                     } else {

@@ -681,11 +681,11 @@ try {
 		this function derives the viewing keys from a spendingkey.
 	*/
 	@ReactMethod
-	public void deriveViewingKey(String spendingKey, Promise promise){
+	public void deriveViewingKey(String spendingKey, Boolean menomic, Promise promise){
 		try{
 			Activity mActivity = getCurrentActivity();
 			Context mContext = mActivity.getApplicationContext();
-			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey);
+			String response = cash.z.wallet.sdk.KtJavaComLayer.Companion.getderiveViewingKey(spendingKey, menomic);
 			promise.resolve(response);
 		}catch (IllegalViewOperationException e) {
 			promise.reject(E_LAYOUT_ERROR, e);

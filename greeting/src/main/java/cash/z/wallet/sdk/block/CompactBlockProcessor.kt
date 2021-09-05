@@ -17,6 +17,7 @@ import cash.z.wallet.sdk.ext.ZcashSdk.POLL_INTERVAL
 import cash.z.wallet.sdk.ext.ZcashSdk.RETRIES
 import cash.z.wallet.sdk.ext.ZcashSdk.REWIND_DISTANCE
 import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT
+import cash.z.wallet.sdk.ext.ZcashSdk.SAPLING_ACTIVATION_HEIGHT_ZCASH
 import cash.z.wallet.sdk.ext.ZcashSdk.SCAN_BATCH_SIZE
 import cash.z.wallet.sdk.jni.RustBackend
 import cash.z.wallet.sdk.jni.RustBackendWelding

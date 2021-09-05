@@ -44,7 +44,7 @@ import java.io.File
 
 
 class Coins (
-  ticker: String,
+  tickeri: String,
   protocol: String,
   accountHash: String,
   iIndexNumber: Int,
@@ -90,6 +90,8 @@ class Coins (
 
      private lateinit var identities: ArrayList<Identities>;
 
+     private var ticker = "";
+
      //private
     var syncroStatus: String = "";
 
@@ -110,7 +112,8 @@ class Coins (
     }
 
     init{ //all the vars are passed into vars
-      var name: String = "$ticker _$accountHash _$protocol";
+      var name: String = "$tickeri _$accountHash _$protocol";
+      ticker = tickeri
       path = Initializer.dataDbPath(context, name);
       host = iHost;
       port = iPort;
@@ -129,6 +132,10 @@ class Coins (
       }else{
         birthdayWallet = Initializer.DefaultBirthdayStore.loadBirthdayFromAssets(context);
       }
+    }
+
+    public fun getticker(): String{
+      return ticker
     }
     /*Funcitons that allow access to the infroamtion in this object*/
     //gets index number

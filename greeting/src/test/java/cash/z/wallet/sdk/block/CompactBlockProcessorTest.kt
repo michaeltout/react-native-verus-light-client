@@ -1,4 +1,4 @@
-package cash.z.wallet.sdk.block
+/*package cash.z.wallet.sdk.block
 
 import cash.z.wallet.sdk.db.entity.CompactBlockEntity
 import cash.z.wallet.sdk.ext.TroubleshootingTwig
@@ -154,3 +154,4 @@ class CompactBlockProcessorTest {
         twig("Done processing!")
     }
 }
+*/

@@ -105,11 +105,6 @@ class Coins (
     var arraylistCleared = ArrayList<String>();
     var arraylistSend = ArrayList<String>();
 
-    companion object {
-      public fun toSeed(mnemonic: CharArray): ByteArray {
-          return SeedCalculator().calculateSeed(String(mnemonic), "")
-      }
-    }
 
     init{ //all the vars are passed into vars
       var name: String = "$tickeri _$accountHash _$protocol";

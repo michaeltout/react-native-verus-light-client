@@ -357,34 +357,32 @@ class KtJavaComLayer (){
 			}
 		}
 
-		fun getderiveSpendingKeys(seed: String, numberOfAccounts: Int, mContext: Context): Array<String>{
-			//var init = Initializer(mContext, "test2", "VRSC");
-			//var walletBirthday = Initializer.DefaultBirthdayStore.loadBirthdayFromAssets(mContext);
-			//init.new("j28ej892jf92fj2fj9e28fj2fgebf72nf92efn92f98m2jfj828mfj2ef7jm287ejmf782jm87jm78ejm278mje2jdx78j2me87dx7m2xe2", walletBirthday);
+		fun getderiveSpendingKeys(seed: String, numberOfAccounts: Int, mContext: Context, menomic: Boolean): Array<String> {
+
 			System.loadLibrary("zcashwalletsdk")
-			var seed2 = Coins.toSeed(seed.toCharArray());
-			var viewingkey = deriveExtendedSpendingKeys(seed2, numberOfAccounts)
-			//init.clear()
-			return viewingkey//viewingkey;
+
+			if( menomic == true){
+				val seed: ByteArray = SimpleMnemonics().toSeed(seed.toCharArray())
+				return deriveExtendedSpendingKeys(seed, numberOfAccounts)
+			}else{
+
+				return deriveExtendedSpendingKeys(seed.decodeHex(), numberOfAccounts)
+			}
 		}
 
 		@JvmStatic private external fun deriveExtendedSpendingKeys(seed: ByteArray, numberOfAccounts: Int): Array<String>
 
 		fun getderiveViewingKey(spendingKey: String, menomic: Boolean): String{
-			//var init = Initializer(mContext, "test2", "VRSC");
-			//var walletBirthday = Initializer.DefaultBirthdayStore.loadBirthdayFromAssets(mContext);
-			//init.new("j28ej892jf92fj2fj9e28fj2fgebf72nf92efn92f98m2jfj828mfj2ef7jm287ejmf782jm87jm78ejm278mje2jdx78j2me87dx7m2xe2", walletBirthday);
-			var viewingkey = "";
+
+
 			System.loadLibrary("zcashwalletsdk")
 			if( menomic == true){
 				val seed: ByteArray = SimpleMnemonics().toSeed(spendingKey.toCharArray())
-				viewingkey = deriveExtendedFullViewingKey(seed)
+				return deriveExtendedFullViewingKey(seed)
 			}else{
-
-				viewingkey = deriveExtendedFullViewingKey(spendingKey.decodeHex())
+				return deriveExtendedFullViewingKey(spendingKey.decodeHex())
 			}
-			//init.clear()
-			return viewingkey//viewingkey;
+
 		}
 
 		fun String.decodeHex(): ByteArray {

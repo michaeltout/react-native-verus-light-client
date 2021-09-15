@@ -196,7 +196,7 @@ class VerusLightClientModule extends ReactContextBaseJavaModule {
 
 			}else{
 					//String[] four = this.getListOfTransaction("cleared", index);
-					//memes = new String[localMeme.length];
+					
 
 					String[] one = this.getListOfTransaction("recieved", index);
 					String[] two = this.getListOfTransaction("pending", index);
@@ -876,7 +876,7 @@ try {
 	@ReactMethod
 	public void getPath(Promise promise){
 		try{
-			String alias = "Dank memes";
+			String alias = "";
 			String path = cash.z.wallet.sdk.KtJavaComLayer.Companion.getPath(VerusLightClientModule.context, alias);
 
 			promise.resolve(path);

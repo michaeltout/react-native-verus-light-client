@@ -270,15 +270,15 @@ class Coins (
         synchronizer?.receivedTransactions!!.collect(
           {
             x ->
-            var meme = x.toList();
-            for(p in 0 until meme.size){
-              var hex =  meme[p]!!.memo //Charsets.US_ASCII
+            var list = x.toList();
+            for(p in 0 until list.size){
+              var hex =  list[p]!!.memo //Charsets.US_ASCII
                 var answere = ""
               if(hex != null) {
                 answere = test(hex!!)
               }
-              val info: String = "address, " + meme[p]!!.toAddress.toString() + ", amount," + meme[p]!!.value.toString() +
-              ", category, recieved, status, confirmed, time," + meme[p]!!.blockTimeInSeconds.toString() +" , txid, " +  meme[p]!!.id.toString() + ", height," + meme[p]!!.minedHeight.toString() + ", memo, " + answere + ","
+              val info: String = "address, " + list[p]!!.toAddress.toString() + ", amount," + list[p]!!.value.toString() +
+              ", category, recieved, status, confirmed, time," + list[p]!!.blockTimeInSeconds.toString() +" , txid, " +  list[p]!!.id.toString() + ", height," + list[p]!!.minedHeight.toString() + ", memo, " + answere + ","
               //here we can add all values together in
               //one big string
               arraylistReceived.add(info)
@@ -290,15 +290,15 @@ class Coins (
       GlobalScope.launch {
         synchronizer?.sentTransactions!!.collect({
           x ->
-          var meme = x.toList();
-          for(p in 0 until meme.size){
-            var hex =  meme[p]!!.memo //Charsets.US_ASCII
+          var list = x.toList();
+          for(p in 0 until list.size){
+            var hex =  list[p]!!.memo //Charsets.US_ASCII
               var answere = ""
             if(hex != null) {
               answere = test(hex!!)
             }
-            val info: String = "address, " + meme[p]!!.toAddress.toString() + ", amount," + meme[p]!!.value.toString() +
-            ", category, recieved, status, confirmed, time," + meme[p]!!.blockTimeInSeconds.toString() +" , txid, " +  meme[p]!!.id.toString() + ", height," + meme[p]!!.minedHeight.toString() + ", memo, " + answere + ","
+            val info: String = "address, " + list[p]!!.toAddress.toString() + ", amount," + list[p]!!.value.toString() +
+            ", category, recieved, status, confirmed, time," + list[p]!!.blockTimeInSeconds.toString() +" , txid, " +  list[p]!!.id.toString() + ", height," + list[p]!!.minedHeight.toString() + ", memo, " + answere + ","
             //here we can add all values together in
             //one big string
             arraylistSend.add(info)
@@ -311,15 +311,15 @@ class Coins (
         synchronizer?.pendingTransactions!!.collect(
           {
             x ->
-            var meme = x.toList();
-            for(p in 0 until meme.size){
-              var hex =  meme[p]!!.memo //Charsets.US_ASCII
+            var list = x.toList();
+            for(p in 0 until list.size){
+              var hex =  list[p]!!.memo //Charsets.US_ASCII
                 var answere = ""
               if(hex != null) {
                 answere = test(hex!!)
               }
-              val info: String = "address, " + meme[p]!!.toAddress.toString() + ", amount," + meme[p]!!.value.toString() +
-              ", category, recieved, status, confirmed, time, , txid, " +  meme[p]!!.id.toString() + ", height," + meme[p]!!.minedHeight.toString() + ", memo, " + answere + ","
+              val info: String = "address, " + list[p]!!.toAddress.toString() + ", amount," + list[p]!!.value.toString() +
+              ", category, recieved, status, confirmed, time, , txid, " +  list[p]!!.id.toString() + ", height," + list[p]!!.minedHeight.toString() + ", memo, " + answere + ","
               arraylistPending.add(info)
             }
           }
@@ -331,15 +331,15 @@ class Coins (
       GlobalScope.launch {
         synchronizer?.clearedTransactions!!.collect({
         x ->
-        var meme = x.toList()
-        for(p in 0 until meme.size){
-          var hex =  meme[p]!!.memo //Charsets.US_ASCII
+        var list = x.toList()
+        for(p in 0 until list.size){
+          var hex =  list[p]!!.memo //Charsets.US_ASCII
             var answere = ""
           if(hex != null) {
             answere = test(hex!!)
           }
-          val info: String = "address, " + meme[p]!!.toAddress.toString() + ", amount," + meme[p]!!.value.toString() +
-          ", category, recieved, status, confirmed, time," + meme[p]!!.blockTimeInSeconds.toString() +" , txid, " +  meme[p]!!.id.toString() + ", height," + meme[p]!!.minedHeight.toString() + ", memo, " + answere + ","
+          val info: String = "address, " + list[p]!!.toAddress.toString() + ", amount," + list[p]!!.value.toString() +
+          ", category, recieved, status, confirmed, time," + list[p]!!.blockTimeInSeconds.toString() +" , txid, " +  list[p]!!.id.toString() + ", height," + list[p]!!.minedHeight.toString() + ", memo, " + answere + ","
           //here we can add all values together in
           //one big string
           twig("dit runt ook ook ${info}")

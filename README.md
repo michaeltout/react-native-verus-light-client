@@ -27,7 +27,7 @@ project(':react-native-verus-light-client').projectDir = new File(rootProject.pr
 include ':greeting'
 project(':greeting').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-verus-light-client/greeting')`
 
-Now it should compile. If you still get the error ':greeting' project not found you have not correctly done the above step. If you get the error 'compactblockprocessor' missing or something like this, it means you don't have rust installed or the arm is missing. If you get a cant find 'react-native-verus-light-cient' error you have probably done something in your settings.gralde in addtion to the step above that is having a spicy interaction with what we are doing.
+Now it should compile. If you still get the error ':greeting' project not found you have not correctly done the above step. If you get the error 'compactblockprocessor' missing or something like this, it means you don't have rust installed or the arm is missing. If you get a cant find 'react-native-verus-light-cient' error you have probably done something in your settings.gralde in addtion to the step above that is having a unwanted interaction with what we are doing.
 
 Have fun with the module.
 
